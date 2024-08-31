@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  nodejs-proxy:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    environment:
+      - PROXY_SOURCE_URL=localhost
+      - PROXY_REPLACE_URL=edu-sharing-documentation.scrollhelp.site
+      - PROXY_TARGET_URL=https://edu-sharing-documentation.scrollhelp.site/
+
+    restart: always
