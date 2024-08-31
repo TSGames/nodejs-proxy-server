@@ -9,6 +9,8 @@ const targetUrl = process.env.PROXY_TARGET_URL
 
 const proxy = httpProxy.createProxyServer({ target: targetUrl, selfHandleResponse: true, changeOrigin: true });
 
+    
+
 proxy.on('proxyReq', (proxyReq, req, res) => {
     const encoding = proxyReq.getHeader('Accept-Encoding');
     if (encoding) {
@@ -19,7 +21,11 @@ proxy.on('proxyReq', (proxyReq, req, res) => {
 // Antwort-Interceptor einrichten
 proxy.on('proxyRes', (proxyRes, req, res) => {
   let body = [];
-
+  let binary = false;
+  console.log(proxyRes.headers);
+  if(proxyRes.headers['content-type']?.startsWith('image')) {
+    binary = true;
+  }
   
   // Datenstücke vom Zielserver sammeln
   proxyRes.on('data', (chunk) => {
@@ -28,16 +34,21 @@ proxy.on('proxyRes', (proxyRes, req, res) => {
 
   // Wenn die gesamte Antwort empfangen wurde
   proxyRes.on('end', () => {
-    body = Buffer.concat(body).toString();
+    const data = Buffer.concat(body);
+    const bodyStr = data.toString();
 
     // Hier kannst du die Antwort modifizieren
-
-    // Beispiel: Ersetze einen bestimmten Text in der Antwort
-    let modifiedBody = body.replaceAll(replaceUrl, thisUrl);
 
 
     // Antwort zurück an den Client senden
     res.writeHead(proxyRes.statusCode, proxyRes.headers);
+    if(binary || !bodyStr.includes(replaceUrl)) {
+        res.end(data);
+        return;  
+    }
+
+    // Beispiel: Ersetze einen bestimmten Text in der Antwort
+    let modifiedBody = bodyStr.replaceAll(replaceUrl, thisUrl);
     res.end(modifiedBody);
   });
 });
