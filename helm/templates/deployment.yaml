@@ -1,18 +1,18 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "helm-nodejs-proxy.fullname" . }}
+  name: helm-nodejs-proxy
   labels:
-    app: {{ include "helm-nodejs-proxy.name" . }}
+    app: helm-nodejs-proxy
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ include "helm-nodejs-proxy.name" . }}
+      app:helm-nodejs-proxy
   template:
     metadata:
       labels:
-        app: {{ include "helm-nodejs-proxy.name" . }}
+        app: helm-nodejs-proxy
     spec:
       containers:
         - name: nodejs-proxy

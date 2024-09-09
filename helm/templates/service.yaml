@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "helm-nodejs-proxy.fullname" . }}
+  name: helm-nodejs-proxy
   labels:
-    app: {{ include "helm-nodejs-proxy.name" . }}
+    app: helm-nodejs-proxy
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -11,4 +11,4 @@ spec:
       targetPort: 80
       protocol: TCP
   selector:
-    app: {{ include "helm-nodejs-proxy.name" . }}
+    app: helm-nodejs-proxy
