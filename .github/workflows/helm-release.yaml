@@ -1,5 +1,5 @@
 jobs:
-  build:
+  helm:
     runs-on: ubuntu-latest
 
     steps:
