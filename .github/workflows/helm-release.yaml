@@ -22,10 +22,10 @@ jobs:
         version: v3.9.0 # oder eine andere gewünschte Version
 
     - name: Helm Lint
-      run: helm lint ./helm-nodejs-proxy
+      run: helm lint ./helm
 
     - name: Helm Package
-      run: helm package ./helm-nodejs-proxy --destination ./charts
+      run: helm package ./helm --destination ./charts
 
     - name: Upload Helm Charts as Build Artifacts
       uses: actions/upload-artifact@v3
@@ -57,7 +57,7 @@ jobs:
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
         mkdir -p docs
-        helm repo index docs --url https://<username>.github.io/<repository>
+        helm repo index docs --url https://tsgames.github.io/nodejs-proxy-server
         mv charts/*.tgz docs/
         git add docs/
         git commit -m "Publish Helm charts"
