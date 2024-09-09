@@ -1,0 +1,34 @@
+replicaCount: 1
+
+image:
+  repository: tsgames/nodejs-proxy-server
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 80
+
+env:
+  PROXY_SOURCE_URL: "localhost"
+  PROXY_REPLACE_URL: "edu-sharing-documentation.scrollhelp.site"
+  PROXY_TARGET_URL: "https://edu-sharing-documentation.scrollhelp.site/"
+
+resources: {}
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+ingress:
+  enabled: true
+  className: ""
+  annotations: {}
+  hosts:
+    - host: "edu-sharing-documentation.scrollhelp.site"
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []

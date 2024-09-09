@@ -1,0 +1,64 @@
+name: Helm Chart Release
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.9.0 # oder eine andere gewünschte Version
+
+    - name: Helm Lint
+      run: helm lint ./helm-nodejs-proxy
+
+    - name: Helm Package
+      run: helm package ./helm-nodejs-proxy --destination ./charts
+
+    - name: Upload Helm Charts as Build Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: helm-charts
+        path: ./charts/*.tgz
+
+  publish:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Check out the repository
+      uses: actions/checkout@v3
+
+    - name: Set up Helm
+      uses: azure/setup-helm@v3
+      with:
+        version: v3.9.0
+
+    - name: Download Helm Charts Artifact
+      uses: actions/download-artifact@v3
+      with:
+        name: helm-charts
+
+    - name: Publish to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      run: |
+        git config user.name "github-actions"
+        git config user.email "github-actions@github.com"
+        mkdir -p docs
+        helm repo index docs --url https://<username>.github.io/<repository>
+        mv charts/*.tgz docs/
+        git add docs/
+        git commit -m "Publish Helm charts"
+        git push origin main
