@@ -22,13 +22,13 @@ jobs:
         version: v3.9.0
 
     - name: Helm Lint
-      run: helm lint ./helm-nodejs-proxy
+      run: helm lint ./helm
 
     - name: Create charts directory
       run: mkdir -p ./charts
 
     - name: Helm Package
-      run: helm package ./helm-nodejs-proxy --destination ./charts
+      run: helm package ./helm --destination ./charts
 
     - name: List packaged charts
       run: ls -la ./charts
