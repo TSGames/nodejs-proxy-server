@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: tsgames/nodejs-proxy-server
-  tag: latest
+  tag: main
   pullPolicy: Always
 
 service:
