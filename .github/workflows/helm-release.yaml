@@ -39,19 +39,15 @@ jobs:
         name: helm-charts
         path: ./charts/*.tgz
 
-    - name: Prepare GitHub Pages directory
-      run: mkdir -p ./docs
-
-    - name: Move packaged chart to docs
-      run: mv ./charts/*.tgz ./docs/
-
-    - name: Create Helm repo index
-      run: helm repo index ./docs --url https://tsgames.github.io/nodejs-proxy-server
-
-    - name: Commit and push to GitHub Pages
+  # 8. Configure git user for committing changes
+    - name: Set up Git user
       run: |
         git config user.name "github-actions"
         git config user.email "github-actions@github.com"
-        git add ./docs
-        git commit -m "Update Helm chart repo"
+
+    # 9. Commit the changes to the docs/ folder
+    - name: Commit changes
+      run: |
+        git add ./charts/*.tgz
+        git commit -m "Update Helm chart and index on $(date +'%Y-%m-%d')"
         git push origin main
