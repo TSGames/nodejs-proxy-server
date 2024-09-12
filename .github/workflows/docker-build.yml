@@ -1,6 +1,7 @@
 name: Docker Image CI
 
 on:
+  label:
   push:
     branches:
       - main
@@ -30,7 +31,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-proxy-server:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/nodejs-proxy-server:${{ env.GITHUB_REF_NAME }}
 
       - name: Docker logout
         run: docker logout
