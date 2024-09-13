@@ -8,7 +8,7 @@ spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app:helm-nodejs-proxy
+      app: helm-nodejs-proxy
   template:
     metadata:
       labels:
