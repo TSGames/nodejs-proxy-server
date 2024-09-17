@@ -41,7 +41,7 @@ proxy.on('proxyRes', (proxyRes, req, res) => {
 
 
     // Antwort zurück an den Client senden
-    delete proxyRes.headers['Content-Length'];
+    delete proxyRes.headers['content-length'];
     res.writeHead(proxyRes.statusCode, proxyRes.headers);
     if(binary || !bodyStr.includes(replaceUrl)) {
         res.end(data);
